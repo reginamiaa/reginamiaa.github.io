@@ -151,9 +151,14 @@ async function loadLatestGitHubRepos() {
     if (!res.ok) return;
 
     const repos = await res.json();
-    // Exclude profile README repo and forks, keep top 3 project repositories
+    // Exclude profile README repo, GitHub Pages repo, and forks
     const filtered = repos
-      .filter((r) => !r.fork && r.name.toLowerCase() !== username.toLowerCase())
+      .filter(
+        (r) =>
+          !r.fork &&
+          r.name.toLowerCase() !== username.toLowerCase() &&
+          r.name.toLowerCase() !== `${username.toLowerCase()}.github.io`
+      )
       .slice(0, 3);
 
     if (filtered.length === 0) return;
